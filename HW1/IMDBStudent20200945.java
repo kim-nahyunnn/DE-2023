@@ -33,7 +33,7 @@ public class IMDBStudent20200945
 		}
 	}
 
-	public static class IMDbReducer extends Reducer<Text, IntWritable, text, IntWritable>
+	public static class IMDbReducer extends Reducer<Text, IntWritable, Text, IntWritable>
 	{
 		private IntWritable result = new IntWritable();
 
