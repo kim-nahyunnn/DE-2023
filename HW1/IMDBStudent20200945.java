@@ -10,7 +10,7 @@ import org.apache.hadoop.mapreduce.lib.input.*;
 import org.apache.hadoop.mapreduce.lib.output.*;
 import org.apache.hadoop.util.GenericOptionsParser;
 
-public class IMDb
+public class IMDBStudent20200945
 {
 	public static class IMDbMapper extends Mapper<Object, Text, Text, IntWritable>
 	{
@@ -54,7 +54,7 @@ public class IMDb
 		Configuration conf = new Configuration();
 		Job job = new Job(conf, "imdb");
 
-		job.setJarByClass(IMDb.class);
+		job.setJarByClass(IMDBStudent20200945.class);
 		job.setMapperClass(IMDbMapper.class);
 		job.setReducerClass(IMDbReducer.class);
 
