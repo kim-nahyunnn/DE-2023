@@ -20,7 +20,7 @@ public class IMDBStudent20200945
 		public void map(Object key, Text value, Context context) throws IOException, InterruptedException
 		{
 			StringTokenizer itr = new StringTokenizer(value.toString(), "::");
-			String genre;
+			String genre = "";
 			while(itr.hasMoreTokens()){
 				genre = itr.nextToken();
 			}
