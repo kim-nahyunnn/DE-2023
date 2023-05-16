@@ -1,5 +1,7 @@
 import java.io.IOException;
 import java.util.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 
 import org.apache.hadoop.conf.*;
 import org.apache.hadoop.fs.FileSystem;
@@ -28,21 +30,25 @@ public class UBERStudent20200945
 			itr = new StringTokenizer(token.get(1), "/");
 			String day = itr.nextToken().trim();
 			String date = itr.nextToken().trim();
-			int num = Integer.parseInt(date) % 7;
+			String year = itr.nextToken().trim();
+
+			LocalDate lDate = LocalDate.of(Integer.parseInt(year), Integer.parseInt(day), Integer.parseInt(date));
+			DayOfWeek dayOfWeek = lDate.getDayOfWeek();
+			int num = dayOfWeek.getValue();
 			if(num == 1)
-				token.set(1, "THR");
-			else if(num == 2)
-				token.set(1, "FRI");
-			else if(num == 3)
-				token.set(1, "SAT");
-			else if(num == 4)
-				token.set(1, "SUN");
-			else if(num == 5)
 				token.set(1, "MON");
-			else if(num == 6)
+			else if(num == 2)
 				token.set(1, "TUE");
-			else
+			else if(num == 3)
 				token.set(1, "WED");
+			else if(num == 4)
+				token.set(1, "THR");
+			else if(num == 5)
+				token.set(1, "FRI");
+			else if(num == 6)
+				token.set(1, "SAT");
+			else
+				token.set(1, "SUN");
 
 			String keyRslt_a = token.get(0) + "," + token.get(1);
 			keyRslt.set(keyRslt_a);
