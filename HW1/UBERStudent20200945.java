@@ -25,7 +25,7 @@ public class UBERStudent20200945
 				token.add(itr.nextToken().trim());
 			}
 
-			StringTokenizer itr = new StringTokenizer(token.get(1), "/");
+			itr = new StringTokenizer(token.get(1), "/");
 			String day = itr.nextToken().trim();
 			String date = itr.nextToken().trim();
 			int num = Integer.parseInt(date) / 7;
@@ -57,7 +57,7 @@ public class UBERStudent20200945
 	{
                 private Text valueRslt = new Text();
 		
-		public void reduceI(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException
+		public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException
 		{
 			int tripSum = 0;
 			int vehicleSum = 0;
@@ -65,9 +65,9 @@ public class UBERStudent20200945
 			String vehicle_a = "";
 
 			for(Text val : values){
-				StringTokenizer itr = StringTokenizer(val.toString(), ",");
-				trip_a = itr.nextToken.trim();
-				vehicle_a = itr.nextToken.trim();
+				StringTokenizer itr = new StringTokenizer(val.toString(), ",");
+				trip_a = itr.nextToken().trim();
+				vehicle_a = itr.nextToken().trim();
 
 				tripSum += Integer.parseInt(trip_a);
 				vehicleSum += Integer.parseInt(vehicle_a);
