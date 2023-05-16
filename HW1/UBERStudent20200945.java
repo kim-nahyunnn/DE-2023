@@ -28,21 +28,21 @@ public class UBERStudent20200945
 			itr = new StringTokenizer(token.get(1), "/");
 			String day = itr.nextToken().trim();
 			String date = itr.nextToken().trim();
-			int num = Integer.parseInt(date) / 7;
+			int num = Integer.parseInt(date) % 7;
 			if(num == 1)
-				token.set(1, "MON");
-			else if(num == 2)
-				token.set(1, "TUE");
-			else if(num == 3)
-				token.set(1, "WED");
-			else if(num == 4)
 				token.set(1, "THR");
-			else if(num == 5)
+			else if(num == 2)
 				token.set(1, "FRI");
-			else if(num == 6)
+			else if(num == 3)
 				token.set(1, "SAT");
-			else
+			else if(num == 4)
 				token.set(1, "SUN");
+			else if(num == 5)
+				token.set(1, "MON");
+			else if(num == 6)
+				token.set(1, "TUE");
+			else
+				token.set(1, "WED");
 
 			String keyRslt_a = token.get(0) + "," + token.get(1);
 			keyRslt.set(keyRslt_a);
