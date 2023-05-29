@@ -49,8 +49,8 @@ public class YouTubeStudent20200945{
 		}
 	}
 	
-	public static class YoutubeMapper extends Mapper<Object, Text, Text, FloatWritable>{
-		private FloatWritable rslt = new FloatWritable();
+	public static class YoutubeMapper extends Mapper<Object, Text, Text, Text>{
+		private Text rslt = new Text();
 		private Text word = new Text();
 	
 		public void map(Object key, Text value, Context context) throws IOException, InterruptedException{
@@ -62,24 +62,25 @@ public class YouTubeStudent20200945{
 			
 			tong = itr.nextToken();
 			tong = itr.nextToken();
-			float rating = Float.parseFloat(itr.nextToken());
-			rslt.set(rating);
+			rslt.set(itr.nextToken());
 			
 			context.write(word, rslt);
 		}
 	}
 	
-	public static class YoutubeReducer extends Reducer<Text, FloatWritable, Text, NullWritable>{
+	public static class YoutubeReducer extends Reducer<Text, Text, Text, NullWritable>{
 		private PriorityQueue<Youtube> queue;
 		private Comparator<Youtube> comp = new YoutubeComparator();
 		private int topK;
 		
-		public void reduce(Text key, Iterable<FloatWritable> values, Context context) throws IOException, InterruptedException{
+		public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException{
 			float sum = 0;
 			int count = 0;
-			for(FloatWritable val : values){
+			for(Text val : values){
+				String vals = val.toString();
+				float f = Float.parseFloat(vals);
 				count += 1;
-				sum += val.get();
+				sum += f;
 			}
 			float rslt = sum / count;
 			String category = key.toString();
@@ -102,7 +103,6 @@ public class YouTubeStudent20200945{
 	
 	public static void main(String[] args) throws Exception{
 		Configuration conf = new Configuration();
-		String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
 		int topK = Integer.parseInt(args[2]);
 		
 		conf.setInt("topK", topK);
@@ -110,6 +110,12 @@ public class YouTubeStudent20200945{
 		job.setJarByClass(YouTubeStudent20200945.class);
 		job.setMapperClass(YoutubeMapper.class);
 		job.setReducerClass(YoutubeReducer.class);
+		
+		job.setMapOutputKeyClass(Text.class);
+		job.setMapOutputValueClass(Text.class);
+
+		job.setInputFormatClass(TextInputFormat.class);
+		job.setOutputFormatClass(TextOutputFormat.class);
 
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(NullWritable.class);
@@ -117,7 +123,7 @@ public class YouTubeStudent20200945{
 		FileInputFormat.addInputPath(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 		FileSystem.get(job.getConfiguration()).delete(new Path(args[1]), true);
-		System.exit(job.waitForCompletion(true) ? 0:1);
+		job.waitForCompletion(true);
 	}
 	
 }
