@@ -15,13 +15,16 @@ import java.io.InputStreamReader;
 
 public class YouTubeStudent20200945{
 
-	public class Youtube{
+	public static class Youtube{
 		public String category;
 		public float rating;
 		
 		public Youtube(String category, float rating){
 			this.category = category;
 			this.rating = rating;
+		}
+		
+		public Youtube(){
 		}
 		
 		public String getString(){
@@ -38,9 +41,9 @@ public class YouTubeStudent20200945{
 	}
 	
 	public static void insertYoutube(PriorityQueue q, String category, float rating, int topK){
-		Youtube youtube_head = (Youtube) q.peek;
+		Youtube youtube_head = (Youtube) q.peek();
 		if(q.size() < topK || youtube_head.rating < rating){
-			Youtube youtube = new youtube(category, rating);
+			Youtube youtube = new Youtube(category, rating);
 			q.add(youtube);
 			if(q.size() > topK) q.remove();
 		}
@@ -66,7 +69,7 @@ public class YouTubeStudent20200945{
 		}
 	}
 	
-	public static class YoutubeReduce extends Reducer<Text, FloatWritable, Text, NullWritable>{
+	public static class YoutubeReducer extends Reducer<Text, FloatWritable, Text, NullWritable>{
 		private PriorityQueue<Youtube> queue;
 		private Comparator<Youtube> comp = new YoutubeComparator();
 		private int topK;
@@ -79,7 +82,7 @@ public class YouTubeStudent20200945{
 				sum += val.get();
 			}
 			float rslt = sum / count;
-			String category = key.get();
+			String category = key.toString();
 			insertYoutube(queue, category, rslt, topK);
 		}	
 		
@@ -100,7 +103,7 @@ public class YouTubeStudent20200945{
 	public static void main(String[] args) throws Exception{
 		Configuration conf = new Configuration();
 		String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
-		int topK = Integer.parseInt(new Path(otherArgs[2]));
+		int topK = Integer.parseInt(args[2]);
 		
 		conf.setInt("topK", topK);
 		Job job = new Job(conf, "TopK");
@@ -111,24 +114,10 @@ public class YouTubeStudent20200945{
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(NullWritable.class);
 
-		job.setInputFormatClass(TextInputFormat.class);
-		job.setOutputFormatClass(TextOutputFormat.class);
-
 		FileInputFormat.addInputPath(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 		FileSystem.get(job.getConfiguration()).delete(new Path(args[1]), true);
-		job.waitForCompletion(true);
+		System.exit(job.waitForCompletion(true) ? 0:1);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }
