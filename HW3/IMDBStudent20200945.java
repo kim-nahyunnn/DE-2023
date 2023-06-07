@@ -38,12 +38,13 @@ public final class IMDBStudent20200945 implements Serializable {
 
         FlatMapFunction<String, String> fmf = new FlatMapFunction<String, String>() {
             public Iterator<String> call(String s) {
-            	StringTokenizer itr = new StringTokenizer(s, "::");
-            	String genre = "";
+		String[] sString = s.split("||");
+            	StringTokenizer itr = new StringTokenizer(sString[2], "|");
+            	List<String> newList = new ArrayList<String>();
             	while(itr.hasMoreTokens()){
-            		genre = itr.nextToken();
+            		newList.add(itr.nextToken());
 		}
-                return Arrays.asList(genre.split("|")).iterator();
+                return Arrays.asList(newList).iterator();
             }
         };
         JavaRDD<String> words = lines.flatMap(fmf);
