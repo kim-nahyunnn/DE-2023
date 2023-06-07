@@ -9,8 +9,18 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.io.IOException;
+import java.util.*;
+import org.apache.hadoop.conf.*;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.*;
+import org.apache.hadoop.mapreduce.*;
+import org.apache.hadoop.mapreduce.lib.input.*;
+import org.apache.hadoop.mapreduce.lib.output.*;
+import org.apache.hadoop.util.GenericOptionsParser;
 
-public final class IMDBStudent20200945 {
+public final class IMDBStudent20200945 implements Serializable {
 
     public static void main(String[] args) throws Exception {
 
@@ -28,8 +38,12 @@ public final class IMDBStudent20200945 {
 
         FlatMapFunction<String, String> fmf = new FlatMapFunction<String, String>() {
             public Iterator<String> call(String s) {
-            	String[] genre = s.split("::");
-                return Arrays.asList(genre[2].split("|")).iterator();
+            	StringTokenizer itr = new StringTokenizer(s, "::");
+            	String genre = "";
+            	while(itr.hasMoreTokens()){
+            		genre = itr.nextToken();
+		}
+                return Arrays.asList(genre.split("|")).iterator();
             }
         };
         JavaRDD<String> words = lines.flatMap(fmf);
