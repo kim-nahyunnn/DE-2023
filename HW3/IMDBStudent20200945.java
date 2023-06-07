@@ -38,7 +38,7 @@ public final class IMDBStudent20200945 implements Serializable {
 
         FlatMapFunction<String, String> fmf = new FlatMapFunction<String, String>() {
             public Iterator<String> call(String s) {
-		String[] sString = s.split("||");
+		String[] sString = s.split("::");
             	StringTokenizer itr = new StringTokenizer(sString[2], "|");
             	List<String> newList = new ArrayList<String>();
             	while(itr.hasMoreTokens()){
