@@ -40,7 +40,7 @@ public final class IMDBStudent20200945 implements Serializable {
             public Iterator<String> call(String s) {
 		String[] sString = s.split("::");
             	StringTokenizer itr = new StringTokenizer(sString[2], "|");
-            	List<String> newList = new ArrayList<String>();
+            	List<String> newList = new List<String>();
             	while(itr.hasMoreTokens()){
             		newList.add(itr.nextToken());
 		}
