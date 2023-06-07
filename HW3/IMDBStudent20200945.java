@@ -24,7 +24,7 @@ public final class IMDBStudent20200945 implements Serializable {
 
     public static void main(String[] args) throws Exception {
 
-        if (args.length < 2) {
+        if (args.length < 1) {
             System.err.println("Usage: JavaWordCount <in-file> <out-file>");
             System.exit(1);
         }
